@@ -1,5 +1,0 @@
-Begin
-Programa prueba
-x = 5 #
-salida x #
-End
