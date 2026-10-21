@@ -17,7 +17,7 @@ Teoría de la Computación · INFO1148
 
 El símbolo inicial es `<programa>`, así que el lenguaje generado es L(G) = L(<programa>): **solo programas completos**
 (`Begin Programa … End`). Una instrucción suelta, como `z = x + y #`, pertenece a L(<instruccion>) pero **no** a
-L(<programa>). Para una instrucción *w* se cumple: *w* ∈ L(<instruccion>) si y solo si
+L(<programa>). Para una instrucción _w_ se cumple: _w_ ∈ L(<instruccion>) si y solo si
 `Begin Programa prueba w End` ∈ L(<programa>).
 
 El informe indica siempre contra qué lenguaje se comprueba cada cadena, y muestra las derivaciones y los árboles tanto
@@ -50,19 +50,6 @@ python3 herramientas/generar_evidencias.py
 
 `evidencias/pruebas.txt` conserva el registro de las 25 pruebas. `generar_evidencias.py` reproduce las 19 comprobaciones
 de cadenas, los dos programas completos, las derivaciones y los árboles (JSON, DOT, SVG y PNG).
-
-## Regenerar el informe
-
-El informe se rellena sobre la plantilla del curso con las derivaciones y los resultados del validador:
-
-```bash
-python3 herramientas/generar_evidencias.py
-python3 docs/fuente/generar_informe_desde_plantilla.py docs/fuente/Formato_Informe_LAB_3.docx \
-        arbol_sintactico/arbol_z_x_mas_y.png evidencias docs/Informe_Laboratorio_3.docx
-soffice --headless --convert-to pdf --outdir docs docs/Informe_Laboratorio_3.docx
-```
-
-Requiere `python-docx` y LibreOffice (solo para convertir a PDF).
 
 ## Alcance
 
