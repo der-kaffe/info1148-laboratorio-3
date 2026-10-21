@@ -1,0 +1,29 @@
+digraph arbol {
+  graph [ordering=out, nodesep=0.25, ranksep=0.55, dpi=170];
+  node [fontname="Helvetica", fontsize=11, margin="0.10,0.05"];
+  edge [color="#555555"];
+  n0 [label="<instruccion>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n1 [label="<asignacion_aritmetica>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n2 [label="ID[z]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n1 -> n2;
+  n3 [label="=", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n1 -> n3;
+  n4 [label="<expresion>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n5 [label="<operando>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n6 [label="ID[x]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n5 -> n6;
+  n4 -> n5;
+  n7 [label="<operador>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n8 [label="+", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n7 -> n8;
+  n4 -> n7;
+  n9 [label="<operando>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n10 [label="ID[y]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n9 -> n10;
+  n4 -> n9;
+  n1 -> n4;
+  n11 [label="#", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n1 -> n11;
+  n0 -> n1;
+  { rank=same; n2; n3; n6; n8; n10; n11; }
+}

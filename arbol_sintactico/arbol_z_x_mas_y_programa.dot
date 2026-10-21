@@ -1,0 +1,41 @@
+digraph arbol {
+  graph [ordering=out, nodesep=0.25, ranksep=0.55, dpi=170];
+  node [fontname="Helvetica", fontsize=11, margin="0.10,0.05"];
+  edge [color="#555555"];
+  n0 [label="<programa>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n1 [label="Begin", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n0 -> n1;
+  n2 [label="Programa", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n0 -> n2;
+  n3 [label="ID[prueba]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n0 -> n3;
+  n4 [label="<lista_instrucciones>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n5 [label="<instruccion>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n6 [label="<asignacion_aritmetica>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n7 [label="ID[z]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n6 -> n7;
+  n8 [label="=", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n6 -> n8;
+  n9 [label="<expresion>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n10 [label="<operando>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n11 [label="ID[x]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n10 -> n11;
+  n9 -> n10;
+  n12 [label="<operador>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n13 [label="+", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n12 -> n13;
+  n9 -> n12;
+  n14 [label="<operando>", shape=box, style="rounded,filled", fillcolor="#dbe9f8", color="#2c5d94"];
+  n15 [label="ID[y]", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n14 -> n15;
+  n9 -> n14;
+  n6 -> n9;
+  n16 [label="#", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n6 -> n16;
+  n5 -> n6;
+  n4 -> n5;
+  n0 -> n4;
+  n17 [label="End", shape=box, style="filled", fillcolor="#dff3e0", color="#2e7d32"];
+  n0 -> n17;
+  { rank=same; n1; n2; n3; n7; n8; n11; n13; n15; n16; n17; }
+}

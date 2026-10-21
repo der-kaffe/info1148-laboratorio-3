@@ -6,42 +6,69 @@ Teoría de la Computación · INFO1148
 
 ## Informe y entrega
 
-- [Informe PDF](docs/Informe_Laboratorio_3.pdf)
-- [Fuente LaTeX autónoma](docs/Informe_Laboratorio_3.tex)
-- [Entrega completa en Google Drive](https://drive.google.com/drive/folders/1bNQcTqB4XKDPTkW4AXRuGCijnVxjX7TX): PDF, LaTeX y ZIP con las evidencias y los anexos citados en el informe.
+- [Informe PDF](docs/Informe_Laboratorio_3.pdf) (formato de la plantilla del laboratorio, secciones 1 a 5 y anexo)
+- [Informe editable (.docx)](docs/Informe_Laboratorio_3.docx)
+- [Gramática base, extensión y gramática léxica](gramatica.bnf)
+- Árboles de derivación de `z = x + y #`: [desde `<instruccion>`](arbol_sintactico/arbol_z_x_mas_y.svg) y [desde `<programa>`](arbol_sintactico/arbol_z_x_mas_y_programa.svg) (también `.png` y `.dot`)
+- [Derivaciones por la izquierda](evidencias/derivaciones.txt) y [resultados de validación](evidencias/validacion.json)
+- [Entrega completa en Google Drive](https://drive.google.com/drive/folders/1bNQcTqB4XKDPTkW4AXRuGCijnVxjX7TX)
 
-Este repositorio conserva 13 archivos del núcleo de la entrega: informe, gramática, validador, programas de ejemplo, casos y evidencias reproducibles. Los documentos docentes, el HTML, las figuras externas y las herramientas de edición del informe se conservan en el paquete completo de Drive.
+## Pertenencia: L(<programa>) y L(<instruccion>)
+
+El símbolo inicial es `<programa>`, así que el lenguaje generado es L(G) = L(<programa>): **solo programas completos**
+(`Begin Programa … End`). Una instrucción suelta, como `z = x + y #`, pertenece a L(<instruccion>) pero **no** a
+L(<programa>). Para una instrucción *w* se cumple: *w* ∈ L(<instruccion>) si y solo si
+`Begin Programa prueba w End` ∈ L(<programa>).
+
+El informe indica siempre contra qué lenguaje se comprueba cada cadena, y muestra las derivaciones y los árboles tanto
+desde `<instruccion>` como desde el símbolo inicial `<programa>`. En el validador, el modo por defecto comprueba L(<programa>)
+y `--fragmento` comprueba **exactamente una instrucción** (L(<instruccion>)).
 
 ## Cobertura de la rúbrica
 
-- **P1 (20 puntos):** terminales, no terminales, símbolo inicial y definición G = (V, Σ, P, S), explicados en el informe.
-- **P2 (30 puntos):** producciones de `gramatica.bnf`, instrucciones múltiples y programa de referencia completo.
-- **P3 (25 puntos):** derivaciones por la izquierda y árbol incluidos en el informe; estructura original en `evidencias/arbol_z_x_mas_y.json`.
-- **P4 (25 puntos):** ocho casos justificados en el informe, con resultados y errores en `evidencias/validacion.json`.
-- **Extensión C:** declaraciones `entero ID #` y `real ID #`, con gramática, derivación y casos válido/inválido.
+- **P1:** terminales por categoría, no terminales, símbolo inicial y G = (V, Σ, P, S) completo, con análisis léxico/sintáctico y gramática léxica a nivel de carácter (Anexo A.1).
+- **P2:** producciones en `gramatica.bnf`, diferenciación de las tres instrucciones, función de cada no terminal, verificación del programa de referencia (20 instrucciones, 91 tokens) y aclaración de pertenencia.
+- **P3:** derivaciones por la izquierda desde `<instruccion>` y desde `<programa>` (`evidencias/derivaciones.txt`) y dos árboles consistentes con ellas.
+- **P4:** ocho casos justificados con el lenguaje comprobado y la posición del error (`evidencias/validacion.json`, Anexo A.2).
+- **Extensión C:** `entero ID #` y `real ID #`, con gramática, derivación y casos válido/inválido.
 
 Los puntajes indican la distribución de la rúbrica, no una calificación obtenida.
 
 ## Ejecutar y verificar
 
-El validador y las pruebas requieren sólo Python 3, sin paquetes adicionales.
+El validador y las pruebas requieren solo Python 3. Los árboles requieren además Graphviz (`dot`).
 
 ```bash
-python3 validador.py ejemplos/programa_referencia.txt
+python3 validador.py ejemplos/programa_referencia.txt                 # ∈ L(<programa>)
 python3 validador.py ejemplos/programa_extendido.txt --extension
-python3 validador.py --fragmento --cadena "z = x + y #"
+python3 validador.py --fragmento --cadena "z = x + y #"               # ∈ L(<instruccion>)
+python3 herramientas/derivacion.py --fragmento --desde instruccion --cadena "z = x + y #"
+python3 herramientas/derivacion.py --fragmento --desde programa --cadena "z = x + y #"
 python3 -m unittest discover -s pruebas -v
 python3 herramientas/generar_evidencias.py
 ```
 
-`evidencias/pruebas.txt` conserva el registro de las 20 pruebas. El generador reproduce once comprobaciones de cadenas y los dos programas completos.
+`evidencias/pruebas.txt` conserva el registro de las 25 pruebas. `generar_evidencias.py` reproduce las 19 comprobaciones
+de cadenas, los dos programas completos, las derivaciones y los árboles (JSON, DOT, SVG y PNG).
 
-El caso 8 se valida de dos maneras: con saltos de línea es válido; con barras `/` literales es inválido. Ambas entradas están en `ejemplos/casos_validacion.json`. El analizador nunca sustituye las barras por saltos de línea.
+## Regenerar el informe
+
+El informe se rellena sobre la plantilla del curso con las derivaciones y los resultados del validador:
+
+```bash
+python3 herramientas/generar_evidencias.py
+python3 docs/fuente/generar_informe_desde_plantilla.py docs/fuente/Formato_Informe_LAB_3.docx \
+        arbol_sintactico/arbol_z_x_mas_y.png evidencias docs/Informe_Laboratorio_3.docx
+soffice --headless --convert-to pdf --outdir docs docs/Informe_Laboratorio_3.docx
+```
+
+Requiere `python-docx` y LibreOffice (solo para convertir a PDF).
 
 ## Alcance
 
-La gramática base reconoce una o más instrucciones de asignación simple, una operación aritmética binaria por asignación o salida de un identificador. Operadores: `+`, `-`, `*`, `/` y `%`. La extensión C se activa con `--extension`.
+La gramática base reconoce una o más instrucciones: asignación simple, asignación con una operación aritmética binaria o salida
+de un identificador. Operadores: `+`, `-`, `*`, `/` y `%`. La extensión C se activa con `--extension`.
 
-`ID` y `NUM` son categorías de tokens; los lexemas se conservan como anotaciones. Los identificadores empiezan con una letra y admiten letras, dígitos y guion bajo. Los números no tienen signo e incluyen 0. Las reservadas distinguen mayúsculas. Se ignoran espacios y comentarios `/* ... */` no anidados. No se realiza evaluación semántica.
-
-El archivo LaTeX incluye el árbol con TikZ y puede compilarse por sí solo con pdfLaTeX. Los materiales docentes citados mantienen su autoría y condiciones de uso.
+`ID` y `NUM` son categorías de tokens; los lexemas se conservan como anotaciones. Los identificadores empiezan con una letra y
+admiten letras, dígitos y guion bajo. Los números no tienen signo e incluyen 0. Las reservadas distinguen mayúsculas.
+Se ignoran espacios y comentarios `/* ... */` no anidados. No se realiza evaluación semántica.

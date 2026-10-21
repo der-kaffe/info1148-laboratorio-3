@@ -1,8 +1,11 @@
 test_cadena_json_y_error_de_sintaxis (test_validador.CLITests.test_cadena_json_y_error_de_sintaxis) ... ok
+test_derivacion_izquierda_desde_el_simbolo_inicial (test_validador.CLITests.test_derivacion_izquierda_desde_el_simbolo_inicial) ... ok
+test_derivacion_izquierda_desde_instruccion (test_validador.CLITests.test_derivacion_izquierda_desde_instruccion) ... ok
 test_errores_de_uso_y_lectura (test_validador.CLITests.test_errores_de_uso_y_lectura) ... ok
 test_stdin_y_archivo (test_validador.CLITests.test_stdin_y_archivo) ... ok
 test_alfabeto_exacto_de_identificadores (test_validador.LenguajeTests.test_alfabeto_exacto_de_identificadores) ... ok
 test_arbol_aritmetico_respeta_todas_las_producciones (test_validador.LenguajeTests.test_arbol_aritmetico_respeta_todas_las_producciones) ... ok
+test_arbol_siempre_tiene_raiz_programa (test_validador.LenguajeTests.test_arbol_siempre_tiene_raiz_programa) ... ok
 test_asignacion_simple_no_agrega_nodo_expresion (test_validador.LenguajeTests.test_asignacion_simple_no_agrega_nodo_expresion) ... ok
 test_barras_literales_no_son_saltos_ni_comentarios_de_linea (test_validador.LenguajeTests.test_barras_literales_no_son_saltos_ni_comentarios_de_linea) ... ok
 test_casos_del_enunciado_y_sus_dos_lecturas_de_barras (test_validador.LenguajeTests.test_casos_del_enunciado_y_sus_dos_lecturas_de_barras) ... ok
@@ -11,8 +14,10 @@ test_comentarios_y_posiciones (test_validador.LenguajeTests.test_comentarios_y_p
 test_contrato_json_y_error_en_fin_de_entrada (test_validador.LenguajeTests.test_contrato_json_y_error_en_fin_de_entrada) ... ok
 test_crlf_y_cr_cuentan_lineas_sin_normalizar_la_entrada (test_validador.LenguajeTests.test_crlf_y_cr_cuentan_lineas_sin_normalizar_la_entrada) ... ok
 test_extension_c_y_reservadas_solo_cuando_esta_activa (test_validador.LenguajeTests.test_extension_c_y_reservadas_solo_cuando_esta_activa) ... ok
+test_fragmento_equivale_a_programa_minimo (test_validador.LenguajeTests.test_fragmento_equivale_a_programa_minimo) ... ok
+test_instruccion_suelta_pertenece_a_instruccion_pero_no_a_programa (test_validador.LenguajeTests.test_instruccion_suelta_pertenece_a_instruccion_pero_no_a_programa) ... ok
 test_mayusculas_y_maxima_longitud_de_reservadas (test_validador.LenguajeTests.test_mayusculas_y_maxima_longitud_de_reservadas) ... ok
-test_modo_programa_y_fragmento_no_se_confunden (test_validador.LenguajeTests.test_modo_programa_y_fragmento_no_se_confunden) ... ok
+test_modo_programa_y_fragmento (test_validador.LenguajeTests.test_modo_programa_y_fragmento) ... ok
 test_no_hay_cadenas_ni_parentesis (test_validador.LenguajeTests.test_no_hay_cadenas_ni_parentesis) ... ok
 test_no_se_evalua_semantica (test_validador.LenguajeTests.test_no_se_evalua_semantica) ... ok
 test_numeros_sin_signo_sin_exponente_y_con_cero (test_validador.LenguajeTests.test_numeros_sin_signo_sin_exponente_y_con_cero) ... ok
@@ -20,6 +25,6 @@ test_programa_referencia_completo_de_20_instrucciones (test_validador.LenguajeTe
 test_tres_cadenas_de_la_pregunta_3 (test_validador.LenguajeTests.test_tres_cadenas_de_la_pregunta_3) ... ok
 
 ----------------------------------------------------------------------
-Ran 20 tests in 0.408s
+Ran 25 tests in 0.192s
 
 OK

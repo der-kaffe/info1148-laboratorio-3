@@ -7,7 +7,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": true,
-      "justificacion": "Asignación simple con operando NUM y terminador #.",
+      "justificacion": "Pertenece a L(<instruccion>): asignación simple ID = NUM #.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": true,
       "coincide": true,
       "tokens": [
@@ -44,7 +45,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": true,
-      "justificacion": "Asignación aritmética con dos operandos y el operador +.",
+      "justificacion": "Pertenece a L(<instruccion>): asignación aritmética ID = ID + ID #.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": true,
       "coincide": true,
       "tokens": [
@@ -93,7 +95,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": true,
-      "justificacion": "La salida contiene un identificador y termina en #.",
+      "justificacion": "Pertenece a L(<instruccion>): salida salida ID #.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": true,
       "coincide": true,
       "tokens": [
@@ -124,7 +127,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": false,
-      "justificacion": "Falta = entre el identificador y el valor.",
+      "justificacion": "Falta el operador de asignación = entre x y 10.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -160,7 +164,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": false,
-      "justificacion": "Después de = se requiere un operando; + está antes del primer operando.",
+      "justificacion": "Después de = se requiere un operando; el operador + aparece antes del primer operando.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -215,6 +220,7 @@
       "extension": false,
       "esperado": false,
       "justificacion": "Falta el identificador que debe seguir a salida.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -244,7 +250,8 @@
       "fragmento": true,
       "extension": false,
       "esperado": false,
-      "justificacion": "Falta el terminador #.",
+      "justificacion": "Falta el terminador # al final de la instrucción.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -275,12 +282,13 @@
       }
     },
     {
-      "id": "8_lineas",
+      "id": "8",
       "texto": "Begin\nPrograma prueba\nx = 5 #\nsalida x #\nEnd",
       "fragmento": false,
       "extension": false,
       "esperado": true,
-      "justificacion": "Las barras del ejemplo impreso se interpretan aquí como separadores editoriales de líneas.",
+      "justificacion": "Pertenece a L(<programa>): programa completo. En el enunciado las barras / separan líneas, por lo que se lee con saltos de línea.",
+      "lenguaje": "L(<programa>)",
       "resultado": true,
       "coincide": true,
       "tokens": [
@@ -354,12 +362,13 @@
       "error": null
     },
     {
-      "id": "8_literal",
+      "id": "8_nota_barras_literales",
       "texto": "Begin / Programa prueba / x = 5 # / salida x # / End",
       "fragmento": false,
       "extension": false,
       "esperado": false,
-      "justificacion": "Una barra literal después de Begin no ocupa el lugar de Programa; / no es un separador del lenguaje.",
+      "justificacion": "Nota: si las barras fueran caracteres literales, / aparecería donde la producción exige Programa, y la cadena se rechaza.",
+      "lenguaje": "L(<programa>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -462,12 +471,188 @@
       }
     },
     {
+      "id": "P3_a",
+      "texto": "x = 20 #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "<asignacion_simple> con NUM.",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "NUM",
+          "lexema": "20",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 8
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "P3_b",
+      "texto": "z = x * y #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "<asignacion_aritmetica> con el operador *.",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "*",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "y",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 11
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "P3_c",
+      "texto": "salida temporal #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "<salida> con ID[temporal].",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "SALIDA",
+          "lexema": "salida",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "ID",
+          "lexema": "temporal",
+          "linea": 1,
+          "columna": 8
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 17
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "P3_instruccion_sola_no_es_programa",
+      "texto": "z = x + y #",
+      "fragmento": false,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "z = x + y # pertenece a L(<instruccion>) pero no a L(<programa>): sin Begin Programa … End no es un programa.",
+      "lenguaje": "L(<programa>)",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "+",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "y",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 11
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba «Begin» (distingue mayúsculas y minúsculas); se encontró «z».",
+        "linea": 1,
+        "columna": 1
+      }
+    },
+    {
       "id": "extension_valida",
       "texto": "entero edad #",
       "fragmento": true,
       "extension": true,
       "esperado": true,
-      "justificacion": "Declaración de tipo entero, identificador y terminador.",
+      "justificacion": "<declaracion> ::= <tipo> ID #.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": true,
       "coincide": true,
       "tokens": [
@@ -498,7 +683,8 @@
       "fragmento": true,
       "extension": true,
       "esperado": false,
-      "justificacion": "Falta el identificador de la declaración.",
+      "justificacion": "Falta el identificador después del tipo.",
+      "lenguaje": "L(<instruccion>)",
       "resultado": false,
       "coincide": true,
       "tokens": [
@@ -520,6 +706,232 @@
         "mensaje": "Se esperaba un identificador después del tipo; se encontró «#».",
         "linea": 1,
         "columna": 8
+      }
+    },
+    {
+      "id": "extra_dos_operadores",
+      "texto": "x = a + b * c #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Una asignación admite una sola operación binaria; aparece un segundo operador.",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "ID",
+          "lexema": "a",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "+",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "b",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "*",
+          "linea": 1,
+          "columna": 11
+        },
+        {
+          "token": "ID",
+          "lexema": "c",
+          "linea": 1,
+          "columna": 13
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 15
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba «#» después de los dos operandos (solo se admite una operación); se encontró «*».",
+        "linea": 1,
+        "columna": 11
+      }
+    },
+    {
+      "id": "extra_signo_unario",
+      "texto": "x = -1 #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "No se define signo unario: después de = se espera un operando sin signo.",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "-",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "NUM",
+          "lexema": "1",
+          "linea": 1,
+          "columna": 6
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 8
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba un identificador o un número sin signo; se encontró «-».",
+        "linea": 1,
+        "columna": 5
+      }
+    },
+    {
+      "id": "extra_lista_vacia",
+      "texto": "Begin Programa prueba End",
+      "fragmento": false,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "La lista debe contener al menos una instrucción.",
+      "lenguaje": "L(<programa>)",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "BEGIN",
+          "lexema": "Begin",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "PROGRAMA",
+          "lexema": "Programa",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "prueba",
+          "linea": 1,
+          "columna": 16
+        },
+        {
+          "token": "END",
+          "lexema": "End",
+          "linea": 1,
+          "columna": 23
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba al menos una instrucción; se encontró «End».",
+        "linea": 1,
+        "columna": 23
+      }
+    },
+    {
+      "id": "extra_dos_instrucciones",
+      "texto": "x = 1 # y = 2 #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Son dos instrucciones: no pertenece a L(<instruccion>), aunque dentro de Begin Programa … End forma un programa válido.",
+      "lenguaje": "L(<instruccion>)",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "NUM",
+          "lexema": "1",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "y",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 11
+        },
+        {
+          "token": "NUM",
+          "lexema": "2",
+          "linea": 1,
+          "columna": 13
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 15
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba el fin de la entrada; se encontró «y».",
+        "linea": 1,
+        "columna": 9
       }
     }
   ],
@@ -558,5 +970,6 @@
       }
     }
   ],
-  "alcance": "Sintaxis de programas o instrucciones según el modo; sin evaluación semántica."
+  "convencion": "L(G) = L(<programa>) contiene solo programas (S = <programa>). Una instrucción suelta w se comprueba contra L(<instruccion>); se cumple w en L(<instruccion>) si y solo si \"Begin Programa prueba w End\" pertenece a L(<programa>).",
+  "alcance": "Sintaxis; sin evaluación semántica."
 }

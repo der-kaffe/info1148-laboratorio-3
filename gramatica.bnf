@@ -1,7 +1,22 @@
-# GLC base. ID y NUM son terminales de categoría léxica.
+# Laboratorio 3 - GLC del lenguaje simplificado (Teoría de la Computación, INFO1148).
+#
+# G = (V, Σ, P, S)
+#   V = { <programa>, <lista_instrucciones>, <instruccion>, <asignacion_simple>,
+#         <asignacion_aritmetica>, <expresion>, <operando>, <operador>, <salida> }
+#   Σ = { Begin, Programa, End, salida, ID, NUM, =, #, +, -, *, /, % }
+#   S = <programa>
+#
+# ID y NUM son terminales de categoría léxica (no se enumeran sus valores).
 # Las comillas indican terminales literales y no forman parte de la entrada.
-# El símbolo inicial es <programa>.
+#
+# Pertenencia. Como S = <programa>, el lenguaje generado es L(G) = L(<programa>): solo programas
+# completos (Begin Programa … End). Una instrucción suelta, como "z = x + y #", pertenece a
+# L(<instruccion>) pero no a L(<programa>). Para una instrucción w se cumple:
+#     w ∈ L(<instruccion>)  si y solo si  "Begin Programa prueba w End" ∈ L(<programa>).
+# El informe indica siempre contra qué lenguaje se comprueba cada cadena; validador.py lo hace con
+# el modo por defecto (L(<programa>)) y con --fragmento (L(<instruccion>)).
 
+# ---------------------------------------------------------------- GRAMÁTICA BASE
 <programa> ::= "Begin" "Programa" ID <lista_instrucciones> "End"
 <lista_instrucciones> ::= <instruccion> <lista_instrucciones> | <instruccion>
 <instruccion> ::= <asignacion_simple> | <asignacion_aritmetica> | <salida>
@@ -12,17 +27,31 @@
 <operador> ::= "+" | "-" | "*" | "/" | "%"
 <salida> ::= "salida" ID "#"
 
-# Extensión C. Se reemplaza la producción <instruccion> por la siguiente
-# y se añaden <declaracion>, <tipo> y los terminales "entero", "real".
-# Las demás producciones y el símbolo inicial se mantienen.
+# ------------------------------------------------- EXTENSIÓN C (declaración de variables)
+# G_ext = (V ∪ {<declaracion>, <tipo>}, Σ ∪ {entero, real}, P_ext, <programa>).
+# P_ext = P con la producción de <instruccion> reemplazada por la siguiente, más dos reglas nuevas.
+# Las demás producciones y el símbolo inicial no cambian.
 
 <instruccion> ::= <asignacion_simple> | <asignacion_aritmetica> | <salida> | <declaracion>
 <declaracion> ::= <tipo> ID "#"
 <tipo> ::= "entero" | "real"
 
-# Definiciones léxicas (fuera de la GLC sintáctica):
+# ------------------------------------------------- DEFINICIONES LÉXICAS (fuera de la GLC)
 # L = [A-Za-zÑñÁÉÍÓÚÜáéíóúü]
 # D = [0-9]
 # ID = L (L | D | "_")*, salvo las reservadas activas.
 # NUM = D+ ("." D+)?
-# Se ignoran los espacios y los comentarios /* ... */ no anidados.
+# Se ignoran los espacios y los comentarios /* ... */ no anidados; el comentario del programa
+# de referencia lo descarta el analizador léxico antes de aplicar la GLC.
+
+# ------------------------------------------------- GRAMÁTICA LÉXICA A NIVEL DE CARÁCTER (Anexo A.1 del informe)
+# ID y NUM también se definen con producciones libres de contexto sobre caracteres ("..." abrevia los
+# rangos). ID es <id> con la restricción léxica de no coincidir con una palabra reservada; NUM es <num>.
+# Con estas reglas, la sustitución léxica de ID/NUM por su lexema es una derivación más.
+
+<id> ::= <letra> <resto_id>
+<resto_id> ::= "" | <letra> <resto_id> | <digito> <resto_id> | "_" <resto_id>
+<num> ::= <digitos> | <digitos> "." <digitos>
+<digitos> ::= <digito> | <digito> <digitos>
+<letra> ::= "A" | "B" | ... | "Z" | "a" | "b" | ... | "z" | "Ñ" | "ñ" | "Á" | "É" | "Í" | "Ó" | "Ú" | "Ü" | "á" | "é" | "í" | "ó" | "ú" | "ü"
+<digito> ::= "0" | "1" | "2" | ... | "9"

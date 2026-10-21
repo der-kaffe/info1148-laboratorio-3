@@ -1,14 +1,18 @@
 """Pruebas del lenguaje, su árbol de derivación y la interfaz de ejecución."""
 from collections import Counter
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+# El proceso hijo debe hablar UTF-8 aunque la consola de Windows use cp1252.
+ENTORNO_UTF8 = {**os.environ, "PYTHONUTF8": "1", "PYTHONIOENCODING": "utf-8"}
 sys.path.insert(0, str(ROOT))
 from validador import LETRAS, validate
+from herramientas.derivacion import derivar_texto
 
 
 def nodos(arbol):
@@ -19,8 +23,10 @@ def nodos(arbol):
 
 
 def hojas(arbol):
+    """Hojas reales del árbol; se omiten los tokens virtuales del programa mínimo de un fragmento."""
     if "token" in arbol:
-        yield arbol
+        if not arbol.get("virtual"):
+            yield arbol
     else:
         for hijo in arbol["hijos"]:
             yield from hojas(hijo)
@@ -77,13 +83,15 @@ class LenguajeTests(unittest.TestCase):
     def test_arbol_aritmetico_respeta_todas_las_producciones(self):
         resultado = self.assertValido("z = x + y #", fragment=True)
         t = resultado["tokens"]
+        instruccion = resultado["arbol"]["hijos"][3]["hijos"][0]
         esperado = {"simbolo": "instruccion", "hijos": [
             {"simbolo": "asignacion_aritmetica", "hijos": [t[0], t[1],
                 {"simbolo": "expresion", "hijos": [
                     {"simbolo": "operando", "hijos": [t[2]]},
                     {"simbolo": "operador", "hijos": [t[3]]},
                     {"simbolo": "operando", "hijos": [t[4]]}]}, t[5]]}]}
-        self.assertEqual(resultado["arbol"], esperado)
+        self.assertEqual(instruccion, esperado)
+        self.assertEqual(resultado["arbol"]["simbolo"], "programa")
         self.assertEqual(t[3]["token"], "OPERADOR")
         self.assertEqual(t[3]["lexema"], "+")
 
@@ -103,8 +111,10 @@ class LenguajeTests(unittest.TestCase):
             with self.subTest(texto=texto):
                 self.assertInvalido(texto, fragment=True)
 
-    def test_modo_programa_y_fragmento_no_se_confunden(self):
+    def test_modo_programa_y_fragmento(self):
+        # L(G) solo contiene programas: una instrucción suelta no es un programa.
         self.assertInvalido("x=1#")
+        # Un fragmento es válido si es exactamente una instrucción: pertenece a L(<instruccion>).
         self.assertValido("x=1#", fragment=True)
         self.assertInvalido("x=1# salida x#", fragment=True)
         programa = "Begin Programa p x=1# End"
@@ -113,6 +123,32 @@ class LenguajeTests(unittest.TestCase):
         for texto in ("", "Begin Programa p End", "Begin Programa p x=1#", programa + " x=2#"):
             with self.subTest(texto=texto):
                 self.assertInvalido(texto)
+        self.assertInvalido("", fragment=True)
+
+    def test_fragmento_equivale_a_programa_minimo(self):
+        cadenas = ["x = 10 #", "z = x + y #", "salida z #", "x 10 #", "z = + x y #", "salida #", "x = 20",
+                   "", "x=1+2+3#", "x=1# End", "Begin Programa q x=1# End", "x=#", "= 1 #"]
+        for cadena in cadenas:
+            with self.subTest(cadena=cadena):
+                como_fragmento = validate(cadena, fragment=True)["valido"]
+                como_programa = validate("Begin Programa prueba\n" + cadena + "\nEnd")["valido"]
+                self.assertEqual(como_fragmento, como_programa)
+
+    def test_instruccion_suelta_pertenece_a_instruccion_pero_no_a_programa(self):
+        for texto in ("x = 20 #", "z = x * y #", "salida temporal #", "z = x + y #"):
+            with self.subTest(texto=texto):
+                self.assertValido(texto, fragment=True)
+                self.assertInvalido(texto)
+        # Dos instrucciones ya no son una instrucción, aunque sí forman un programa válido.
+        self.assertInvalido("x = 1 # y = 2 #", fragment=True)
+        self.assertValido("Begin Programa p x = 1 # y = 2 # End")
+
+    def test_arbol_siempre_tiene_raiz_programa(self):
+        for texto, opciones in (("x=1#", {"fragment": True}), ("Begin Programa p x=1# End", {})):
+            arbol = self.assertValido(texto, **opciones)["arbol"]
+            self.assertEqual(arbol["simbolo"], "programa")
+            self.assertEqual([h.get("simbolo") or h["token"] for h in arbol["hijos"]],
+                             ["BEGIN", "PROGRAMA", "ID", "lista_instrucciones", "END"])
 
     def test_extension_c_y_reservadas_solo_cuando_esta_activa(self):
         for tipo in ("entero", "real"):
@@ -185,8 +221,9 @@ class LenguajeTests(unittest.TestCase):
 
     def test_contrato_json_y_error_en_fin_de_entrada(self):
         resultado = self.assertInvalido("x = 20", fragment=True)
-        self.assertEqual(set(resultado), {"valido", "modo", "extension", "tokens", "arbol", "error"})
-        self.assertEqual(resultado["modo"], "instruccion")
+        self.assertEqual(set(resultado), {"valido", "modo", "lenguaje", "extension", "tokens", "arbol", "error"})
+        self.assertEqual(resultado["modo"], "fragmento")
+        self.assertEqual(resultado["lenguaje"], "L(<instruccion>)")
         self.assertEqual((resultado["error"]["linea"], resultado["error"]["columna"]), (1, 7))
         for token in resultado["tokens"]:
             self.assertEqual(set(token), {"token", "lexema", "linea", "columna"})
@@ -197,7 +234,8 @@ class LenguajeTests(unittest.TestCase):
 class CLITests(unittest.TestCase):
     def ejecutar(self, *args, entrada=None):
         return subprocess.run([sys.executable, str(ROOT / "validador.py"), *args],
-                              input=entrada, text=True, encoding="utf-8", capture_output=True)
+                              input=entrada, text=True, encoding="utf-8", capture_output=True,
+                              env=ENTORNO_UTF8)
 
     def test_cadena_json_y_error_de_sintaxis(self):
         valido = self.ejecutar("--fragmento", "--cadena", "salida z#", "--json")
@@ -214,6 +252,28 @@ class CLITests(unittest.TestCase):
         resultado = self.ejecutar(str(ROOT / "ejemplos/programa_referencia.txt"), "--json")
         self.assertEqual(resultado.returncode, 0, resultado.stderr)
         self.assertEqual(json.loads(resultado.stdout)["modo"], "programa")
+        self.assertEqual(json.loads(resultado.stdout)["lenguaje"], "L(<programa>)")
+
+    def test_derivacion_izquierda_desde_el_simbolo_inicial(self):
+        pasos = derivar_texto("z = x + y #", fragmento=True)
+        self.assertEqual(pasos[0], "<programa>")
+        # Las formas sentenciales usan la categoría ID; el último paso es la sustitución léxica.
+        self.assertEqual(pasos[-2], "Begin Programa ID ID = ID + ID # End")
+        self.assertEqual(pasos[-1], "Begin Programa prueba z = x + y # End")
+        self.assertEqual(len(pasos), 10)
+        pasos = derivar_texto("salida z #", fragmento=True)
+        self.assertEqual(pasos[-1], "Begin Programa prueba salida z # End")
+        self.assertEqual(len(pasos), 6)
+
+    def test_derivacion_izquierda_desde_instruccion(self):
+        pasos = derivar_texto("z = x + y #", fragmento=True, desde="instruccion")
+        self.assertEqual(pasos, ["<instruccion>", "<asignacion_aritmetica>", "ID = <expresion> #",
+                                 "ID = <operando> <operador> <operando> #", "ID = ID <operador> <operando> #",
+                                 "ID = ID + <operando> #", "ID = ID + ID #", "z = x + y #"])
+        self.assertEqual(derivar_texto("salida z #", fragmento=True, desde="instruccion"),
+                         ["<instruccion>", "<salida>", "salida ID #", "salida z #"])
+        self.assertEqual(derivar_texto("entero edad #", fragmento=True, extension=True, desde="instruccion"),
+                         ["<instruccion>", "<declaracion>", "<tipo> ID #", "entero ID #", "entero edad #"])
 
     def test_errores_de_uso_y_lectura(self):
         resultado = self.ejecutar(str(ROOT / "ejemplos/programa_referencia.txt"), "--cadena", "x=1#")

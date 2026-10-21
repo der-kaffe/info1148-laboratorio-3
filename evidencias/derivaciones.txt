@@ -1,0 +1,51 @@
+Derivación por la izquierda de «z = x + y #» desde <instruccion>:
+<instruccion>
+⇒ <asignacion_aritmetica>
+⇒ ID = <expresion> #
+⇒ ID = <operando> <operador> <operando> #
+⇒ ID = ID <operador> <operando> #
+⇒ ID = ID + <operando> #
+⇒ ID = ID + ID #
+⇒ z = x + y #
+
+Derivación por la izquierda de «z = x + y #» desde <programa> (dentro de Begin Programa prueba … End):
+<programa>
+⇒ Begin Programa ID <lista_instrucciones> End
+⇒ Begin Programa ID <instruccion> End
+⇒ Begin Programa ID <asignacion_aritmetica> End
+⇒ Begin Programa ID ID = <expresion> # End
+⇒ Begin Programa ID ID = <operando> <operador> <operando> # End
+⇒ Begin Programa ID ID = ID <operador> <operando> # End
+⇒ Begin Programa ID ID = ID + <operando> # End
+⇒ Begin Programa ID ID = ID + ID # End
+⇒ Begin Programa prueba z = x + y # End
+
+Derivación por la izquierda de «salida z #» desde <instruccion>:
+<instruccion>
+⇒ <salida>
+⇒ salida ID #
+⇒ salida z #
+
+Derivación por la izquierda de «salida z #» desde <programa> (dentro de Begin Programa prueba … End):
+<programa>
+⇒ Begin Programa ID <lista_instrucciones> End
+⇒ Begin Programa ID <instruccion> End
+⇒ Begin Programa ID <salida> End
+⇒ Begin Programa ID salida ID # End
+⇒ Begin Programa prueba salida z # End
+
+Derivación por la izquierda de «entero edad # (extensión C)» desde <instruccion>:
+<instruccion>
+⇒ <declaracion>
+⇒ <tipo> ID #
+⇒ entero ID #
+⇒ entero edad #
+
+Derivación por la izquierda de «entero edad # (extensión C)» desde <programa> (dentro de Begin Programa prueba … End):
+<programa>
+⇒ Begin Programa ID <lista_instrucciones> End
+⇒ Begin Programa ID <instruccion> End
+⇒ Begin Programa ID <declaracion> End
+⇒ Begin Programa ID <tipo> ID # End
+⇒ Begin Programa ID entero ID # End
+⇒ Begin Programa prueba entero edad # End

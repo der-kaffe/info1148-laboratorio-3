@@ -1,4 +1,16 @@
-"""Validador léxico y sintáctico de la GLC del Laboratorio 3 (sin semántica)."""
+"""Validador léxico y sintáctico de la GLC del Laboratorio 3 (sin semántica).
+
+Dos juicios de pertenencia, que el informe distingue explícitamente:
+
+* Modo programa (por defecto): ¿la entrada pertenece a L(<programa>)? Con S = <programa>,
+  este es el lenguaje generado por la gramática: programas completos ``Begin Programa … End``.
+* Modo ``--fragmento``: ¿la entrada es exactamente una instrucción, es decir, pertenece a
+  L(<instruccion>)? Para una instrucción w se cumple: w ∈ L(<instruccion>) si y solo si
+  ``Begin Programa prueba w End`` ∈ L(<programa>). Por eso el árbol devuelto siempre tiene
+  raíz <programa>, y los tokens del programa mínimo se marcan como virtuales.
+
+Una instrucción suelta pertenece a L(<instruccion>) pero no a L(<programa>).
+"""
 from __future__ import annotations
 
 import argparse
@@ -158,34 +170,57 @@ class _Parser:
             asignacion = _nodo("asignacion_simple", identificador, igual, primero, fin)
         return _nodo("instruccion", asignacion)
 
+    @staticmethod
+    def _virtual(tipo, lexema):
+        """Token implícito del programa mínimo que envuelve un fragmento (no está en la entrada)."""
+        return {"token": tipo, "lexema": lexema, "linea": 0, "columna": 0, "virtual": True}
+
+    def _instrucciones(self, hasta_end):
+        instrucciones = []
+        if not hasta_end:
+            # Modo fragmento: exactamente una instrucción (L(<instruccion>)).
+            if self.actual["token"] == "EOF":
+                self._error("una instrucción")
+            instrucciones.append(self._instruccion())
+        while hasta_end and self.actual["token"] != "EOF" and self.actual["token"] != "END":
+            instrucciones.append(self._instruccion())
+        if not instrucciones:
+            self._error("al menos una instrucción")
+        # Construye exactamente la producción recursiva por la derecha:
+        # <lista_instrucciones> ::= <instruccion> <lista_instrucciones> | <instruccion>
+        lista = _nodo("lista_instrucciones", instrucciones[-1])
+        for instruccion in reversed(instrucciones[:-1]):
+            lista = _nodo("lista_instrucciones", instruccion, lista)
+        return lista
+
     def analizar(self, fragment):
+        """Siempre devuelve un árbol con raíz <programa>, el símbolo inicial de G."""
         if fragment:
-            arbol = self._instruccion()
+            begin = self._virtual("BEGIN", "Begin")
+            programa = self._virtual("PROGRAMA", "Programa")
+            nombre = self._virtual("ID", "prueba")
+            lista = self._instrucciones(hasta_end=False)
+            end = self._virtual("END", "End")
         else:
             begin = self._tomar("BEGIN", "«Begin» (distingue mayúsculas y minúsculas)")
             programa = self._tomar("PROGRAMA", "«Programa» después de «Begin»")
             nombre = self._tomar("ID", "el identificador del programa")
-            instrucciones = []
-            while self.actual["token"] not in {"END", "EOF"}:
-                instrucciones.append(self._instruccion())
-            if not instrucciones:
-                self._error("al menos una instrucción")
-            # Construye exactamente la producción recursiva por la derecha.
-            lista = _nodo("lista_instrucciones", instrucciones[-1])
-            for instruccion in reversed(instrucciones[:-1]):
-                lista = _nodo("lista_instrucciones", instruccion, lista)
+            lista = self._instrucciones(hasta_end=True)
             end = self._tomar("END", "«End» para cerrar el programa")
-            arbol = _nodo("programa", begin, programa, nombre, lista, end)
         if self.actual["token"] != "EOF":
             self._error("el fin de la entrada")
-        return arbol
+        return _nodo("programa", begin, programa, nombre, lista, end)
 
 
 def validate(source: str, fragment=False, extension=False) -> dict:
-    """Valida un programa o una instrucción; no evalúa valores, tipos ni nombres."""
+    """Valida un programa completo o, con ``fragment``, las instrucciones de un programa mínimo.
+
+    No evalúa valores, tipos ni nombres. El árbol devuelto siempre tiene raíz <programa>.
+    """
     if not isinstance(source, str):
         raise TypeError("source debe ser una cadena de texto")
-    resultado = {"valido": False, "modo": "instruccion" if fragment else "programa",
+    resultado = {"valido": False, "modo": "fragmento" if fragment else "programa",
+                 "lenguaje": "L(<instruccion>)" if fragment else "L(<programa>)",
                  "extension": bool(extension), "tokens": [], "arbol": None, "error": None}
     lexer = _Lexer(source, extension)
     try:
@@ -198,14 +233,22 @@ def validate(source: str, fragment=False, extension=False) -> dict:
     return resultado
 
 
+def usar_utf8_en_flujos():
+    """Fuerza UTF-8 en stdin/stdout/stderr (en Windows, con pipes, Python usa cp1252)."""
+    for flujo in (sys.stdin, sys.stdout, sys.stderr):
+        if hasattr(flujo, "reconfigure"):
+            flujo.reconfigure(encoding="utf-8")
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("archivo", nargs="?", help="archivo UTF-8; sin archivo se lee la entrada estándar")
     parser.add_argument("--cadena", help="texto que se valida en lugar de un archivo")
-    parser.add_argument("--fragmento", action="store_true", help="validar una sola instrucción")
+    parser.add_argument("--fragmento", action="store_true", help="validar exactamente una instrucción (pertenencia a L(<instruccion>)) en lugar de un programa completo")
     parser.add_argument("--extension", action="store_true", help="admitir declaraciones entero/real")
     parser.add_argument("--json", action="store_true", dest="salida_json", help="mostrar el resultado completo en JSON")
     args = parser.parse_args(argv)
+    usar_utf8_en_flujos()
     if args.archivo and args.cadena is not None:
         parser.error("archivo y --cadena son alternativas; use solo una")
     try:
@@ -218,10 +261,10 @@ def main(argv=None):
     if args.salida_json:
         print(json.dumps(resultado, ensure_ascii=False, indent=2))
     elif resultado["valido"]:
-        print(f"Válido: {resultado['modo']}" + (" con extensión C." if args.extension else "."))
+        print(f"Válido: {resultado['modo']}, pertenece a {resultado['lenguaje']}" + (" (con extensión C)." if args.extension else "."))
     else:
         error = resultado["error"]
-        print(f"Inválido ({error['fase']}, línea {error['linea']}, columna {error['columna']}): {error['mensaje']}")
+        print(f"Inválido para {resultado['lenguaje']} ({error['fase']}, línea {error['linea']}, columna {error['columna']}): {error['mensaje']}")
     return 0 if resultado["valido"] else 1
 
 

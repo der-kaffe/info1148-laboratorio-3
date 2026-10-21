@@ -1,13 +1,154 @@
 [
-  {"id":"1","texto":"x = 10 #","fragmento":true,"extension":false,"esperado":true,"justificacion":"Asignación simple con operando NUM y terminador #."},
-  {"id":"2","texto":"z = x + y #","fragmento":true,"extension":false,"esperado":true,"justificacion":"Asignación aritmética con dos operandos y el operador +."},
-  {"id":"3","texto":"salida z #","fragmento":true,"extension":false,"esperado":true,"justificacion":"La salida contiene un identificador y termina en #."},
-  {"id":"4","texto":"x 10 #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta = entre el identificador y el valor."},
-  {"id":"5","texto":"z = + x y #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Después de = se requiere un operando; + está antes del primer operando."},
-  {"id":"6","texto":"salida #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta el identificador que debe seguir a salida."},
-  {"id":"7","texto":"x = 20","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta el terminador #."},
-  {"id":"8_lineas","texto":"Begin\nPrograma prueba\nx = 5 #\nsalida x #\nEnd","fragmento":false,"extension":false,"esperado":true,"justificacion":"Las barras del ejemplo impreso se interpretan aquí como separadores editoriales de líneas."},
-  {"id":"8_literal","texto":"Begin / Programa prueba / x = 5 # / salida x # / End","fragmento":false,"extension":false,"esperado":false,"justificacion":"Una barra literal después de Begin no ocupa el lugar de Programa; / no es un separador del lenguaje."},
-  {"id":"extension_valida","texto":"entero edad #","fragmento":true,"extension":true,"esperado":true,"justificacion":"Declaración de tipo entero, identificador y terminador."},
-  {"id":"extension_invalida","texto":"entero #","fragmento":true,"extension":true,"esperado":false,"justificacion":"Falta el identificador de la declaración."}
+ {
+  "id": "1",
+  "texto": "x = 10 #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "Pertenece a L(<instruccion>): asignación simple ID = NUM #."
+ },
+ {
+  "id": "2",
+  "texto": "z = x + y #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "Pertenece a L(<instruccion>): asignación aritmética ID = ID + ID #."
+ },
+ {
+  "id": "3",
+  "texto": "salida z #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "Pertenece a L(<instruccion>): salida salida ID #."
+ },
+ {
+  "id": "4",
+  "texto": "x 10 #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Falta el operador de asignación = entre x y 10."
+ },
+ {
+  "id": "5",
+  "texto": "z = + x y #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Después de = se requiere un operando; el operador + aparece antes del primer operando."
+ },
+ {
+  "id": "6",
+  "texto": "salida #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Falta el identificador que debe seguir a salida."
+ },
+ {
+  "id": "7",
+  "texto": "x = 20",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Falta el terminador # al final de la instrucción."
+ },
+ {
+  "id": "8",
+  "texto": "Begin\nPrograma prueba\nx = 5 #\nsalida x #\nEnd",
+  "fragmento": false,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "Pertenece a L(<programa>): programa completo. En el enunciado las barras / separan líneas, por lo que se lee con saltos de línea."
+ },
+ {
+  "id": "8_nota_barras_literales",
+  "texto": "Begin / Programa prueba / x = 5 # / salida x # / End",
+  "fragmento": false,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Nota: si las barras fueran caracteres literales, / aparecería donde la producción exige Programa, y la cadena se rechaza."
+ },
+ {
+  "id": "P3_a",
+  "texto": "x = 20 #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "<asignacion_simple> con NUM."
+ },
+ {
+  "id": "P3_b",
+  "texto": "z = x * y #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "<asignacion_aritmetica> con el operador *."
+ },
+ {
+  "id": "P3_c",
+  "texto": "salida temporal #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": true,
+  "justificacion": "<salida> con ID[temporal]."
+ },
+ {
+  "id": "P3_instruccion_sola_no_es_programa",
+  "texto": "z = x + y #",
+  "fragmento": false,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "z = x + y # pertenece a L(<instruccion>) pero no a L(<programa>): sin Begin Programa … End no es un programa."
+ },
+ {
+  "id": "extension_valida",
+  "texto": "entero edad #",
+  "fragmento": true,
+  "extension": true,
+  "esperado": true,
+  "justificacion": "<declaracion> ::= <tipo> ID #."
+ },
+ {
+  "id": "extension_invalida",
+  "texto": "entero #",
+  "fragmento": true,
+  "extension": true,
+  "esperado": false,
+  "justificacion": "Falta el identificador después del tipo."
+ },
+ {
+  "id": "extra_dos_operadores",
+  "texto": "x = a + b * c #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Una asignación admite una sola operación binaria; aparece un segundo operador."
+ },
+ {
+  "id": "extra_signo_unario",
+  "texto": "x = -1 #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "No se define signo unario: después de = se espera un operando sin signo."
+ },
+ {
+  "id": "extra_lista_vacia",
+  "texto": "Begin Programa prueba End",
+  "fragmento": false,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "La lista debe contener al menos una instrucción."
+ },
+ {
+  "id": "extra_dos_instrucciones",
+  "texto": "x = 1 # y = 2 #",
+  "fragmento": true,
+  "extension": false,
+  "esperado": false,
+  "justificacion": "Son dos instrucciones: no pertenece a L(<instruccion>), aunque dentro de Begin Programa … End forma un programa válido."
+ }
 ]

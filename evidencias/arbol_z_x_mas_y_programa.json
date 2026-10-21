@@ -1,0 +1,100 @@
+{
+  "simbolo": "programa",
+  "hijos": [
+    {
+      "token": "BEGIN",
+      "lexema": "Begin",
+      "linea": 1,
+      "columna": 1
+    },
+    {
+      "token": "PROGRAMA",
+      "lexema": "Programa",
+      "linea": 2,
+      "columna": 1
+    },
+    {
+      "token": "ID",
+      "lexema": "prueba",
+      "linea": 2,
+      "columna": 10
+    },
+    {
+      "simbolo": "lista_instrucciones",
+      "hijos": [
+        {
+          "simbolo": "instruccion",
+          "hijos": [
+            {
+              "simbolo": "asignacion_aritmetica",
+              "hijos": [
+                {
+                  "token": "ID",
+                  "lexema": "z",
+                  "linea": 3,
+                  "columna": 1
+                },
+                {
+                  "token": "IGUAL",
+                  "lexema": "=",
+                  "linea": 3,
+                  "columna": 3
+                },
+                {
+                  "simbolo": "expresion",
+                  "hijos": [
+                    {
+                      "simbolo": "operando",
+                      "hijos": [
+                        {
+                          "token": "ID",
+                          "lexema": "x",
+                          "linea": 3,
+                          "columna": 5
+                        }
+                      ]
+                    },
+                    {
+                      "simbolo": "operador",
+                      "hijos": [
+                        {
+                          "token": "OPERADOR",
+                          "lexema": "+",
+                          "linea": 3,
+                          "columna": 7
+                        }
+                      ]
+                    },
+                    {
+                      "simbolo": "operando",
+                      "hijos": [
+                        {
+                          "token": "ID",
+                          "lexema": "y",
+                          "linea": 3,
+                          "columna": 9
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "token": "FIN",
+                  "lexema": "#",
+                  "linea": 3,
+                  "columna": 11
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "token": "END",
+      "lexema": "End",
+      "linea": 4,
+      "columna": 1
+    }
+  ]
+}
