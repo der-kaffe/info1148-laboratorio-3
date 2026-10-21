@@ -1,0 +1,31 @@
+Begin
+Programa operativo_01_02
+
+x = 1.345 #
+y = 20 #
+
+/* operaciones y salidas */
+
+z = x + y #
+z2 = x + y #
+h = z - x #
+h2 = z - x #
+k = h * y #
+t = k / z #
+m = k % 10 #
+
+salida z #
+salida h #
+salida k #
+salida t #
+salida m #
+
+temporal = 0 #
+temporal = x #
+x = y #
+y = temporal #
+
+salida x #
+salida y #
+
+End

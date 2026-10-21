@@ -1,0 +1,13 @@
+[
+  {"id":"1","texto":"x = 10 #","fragmento":true,"extension":false,"esperado":true,"justificacion":"Asignación simple con operando NUM y terminador #."},
+  {"id":"2","texto":"z = x + y #","fragmento":true,"extension":false,"esperado":true,"justificacion":"Asignación aritmética con dos operandos y el operador +."},
+  {"id":"3","texto":"salida z #","fragmento":true,"extension":false,"esperado":true,"justificacion":"La salida contiene un identificador y termina en #."},
+  {"id":"4","texto":"x 10 #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta = entre el identificador y el valor."},
+  {"id":"5","texto":"z = + x y #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Después de = se requiere un operando; + está antes del primer operando."},
+  {"id":"6","texto":"salida #","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta el identificador que debe seguir a salida."},
+  {"id":"7","texto":"x = 20","fragmento":true,"extension":false,"esperado":false,"justificacion":"Falta el terminador #."},
+  {"id":"8_lineas","texto":"Begin\nPrograma prueba\nx = 5 #\nsalida x #\nEnd","fragmento":false,"extension":false,"esperado":true,"justificacion":"Las barras del ejemplo impreso se interpretan aquí como separadores editoriales de líneas."},
+  {"id":"8_literal","texto":"Begin / Programa prueba / x = 5 # / salida x # / End","fragmento":false,"extension":false,"esperado":false,"justificacion":"Una barra literal después de Begin no ocupa el lugar de Programa; / no es un separador del lenguaje."},
+  {"id":"extension_valida","texto":"entero edad #","fragmento":true,"extension":true,"esperado":true,"justificacion":"Declaración de tipo entero, identificador y terminador."},
+  {"id":"extension_invalida","texto":"entero #","fragmento":true,"extension":true,"esperado":false,"justificacion":"Falta el identificador de la declaración."}
+]

@@ -1,0 +1,562 @@
+{
+  "gramatica": "gramatica.bnf",
+  "casos": [
+    {
+      "id": "1",
+      "texto": "x = 10 #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "Asignación simple con operando NUM y terminador #.",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "NUM",
+          "lexema": "10",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 8
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "2",
+      "texto": "z = x + y #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "Asignación aritmética con dos operandos y el operador +.",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "+",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "y",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 11
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "3",
+      "texto": "salida z #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "La salida contiene un identificador y termina en #.",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "SALIDA",
+          "lexema": "salida",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 8
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 10
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "4",
+      "texto": "x 10 #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Falta = entre el identificador y el valor.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "NUM",
+          "lexema": "10",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 6
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba «=» después del identificador; se encontró «10».",
+        "linea": 1,
+        "columna": 3
+      }
+    },
+    {
+      "id": "5",
+      "texto": "z = + x y #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Después de = se requiere un operando; + está antes del primer operando.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "+",
+          "linea": 1,
+          "columna": 5
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "ID",
+          "lexema": "y",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 11
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba un identificador o un número sin signo; se encontró «+».",
+        "linea": 1,
+        "columna": 5
+      }
+    },
+    {
+      "id": "6",
+      "texto": "salida #",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Falta el identificador que debe seguir a salida.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "SALIDA",
+          "lexema": "salida",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 8
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba un identificador después de «salida»; se encontró «#».",
+        "linea": 1,
+        "columna": 8
+      }
+    },
+    {
+      "id": "7",
+      "texto": "x = 20",
+      "fragmento": true,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Falta el terminador #.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "token": "NUM",
+          "lexema": "20",
+          "linea": 1,
+          "columna": 5
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba «#» para terminar la asignación, o un operador aritmético; se encontró el fin de la entrada.",
+        "linea": 1,
+        "columna": 7
+      }
+    },
+    {
+      "id": "8_lineas",
+      "texto": "Begin\nPrograma prueba\nx = 5 #\nsalida x #\nEnd",
+      "fragmento": false,
+      "extension": false,
+      "esperado": true,
+      "justificacion": "Las barras del ejemplo impreso se interpretan aquí como separadores editoriales de líneas.",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "BEGIN",
+          "lexema": "Begin",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "PROGRAMA",
+          "lexema": "Programa",
+          "linea": 2,
+          "columna": 1
+        },
+        {
+          "token": "ID",
+          "lexema": "prueba",
+          "linea": 2,
+          "columna": 10
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 3,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 3,
+          "columna": 3
+        },
+        {
+          "token": "NUM",
+          "lexema": "5",
+          "linea": 3,
+          "columna": 5
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 3,
+          "columna": 7
+        },
+        {
+          "token": "SALIDA",
+          "lexema": "salida",
+          "linea": 4,
+          "columna": 1
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 4,
+          "columna": 8
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 4,
+          "columna": 10
+        },
+        {
+          "token": "END",
+          "lexema": "End",
+          "linea": 5,
+          "columna": 1
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "8_literal",
+      "texto": "Begin / Programa prueba / x = 5 # / salida x # / End",
+      "fragmento": false,
+      "extension": false,
+      "esperado": false,
+      "justificacion": "Una barra literal después de Begin no ocupa el lugar de Programa; / no es un separador del lenguaje.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "BEGIN",
+          "lexema": "Begin",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "/",
+          "linea": 1,
+          "columna": 7
+        },
+        {
+          "token": "PROGRAMA",
+          "lexema": "Programa",
+          "linea": 1,
+          "columna": 9
+        },
+        {
+          "token": "ID",
+          "lexema": "prueba",
+          "linea": 1,
+          "columna": 18
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "/",
+          "linea": 1,
+          "columna": 25
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 27
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 29
+        },
+        {
+          "token": "NUM",
+          "lexema": "5",
+          "linea": 1,
+          "columna": 31
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 33
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "/",
+          "linea": 1,
+          "columna": 35
+        },
+        {
+          "token": "SALIDA",
+          "lexema": "salida",
+          "linea": 1,
+          "columna": 37
+        },
+        {
+          "token": "ID",
+          "lexema": "x",
+          "linea": 1,
+          "columna": 44
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 46
+        },
+        {
+          "token": "OPERADOR",
+          "lexema": "/",
+          "linea": 1,
+          "columna": 48
+        },
+        {
+          "token": "END",
+          "lexema": "End",
+          "linea": 1,
+          "columna": 50
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba «Programa» después de «Begin»; se encontró «/».",
+        "linea": 1,
+        "columna": 7
+      }
+    },
+    {
+      "id": "extension_valida",
+      "texto": "entero edad #",
+      "fragmento": true,
+      "extension": true,
+      "esperado": true,
+      "justificacion": "Declaración de tipo entero, identificador y terminador.",
+      "resultado": true,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ENTERO",
+          "lexema": "entero",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "ID",
+          "lexema": "edad",
+          "linea": 1,
+          "columna": 8
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 13
+        }
+      ],
+      "error": null
+    },
+    {
+      "id": "extension_invalida",
+      "texto": "entero #",
+      "fragmento": true,
+      "extension": true,
+      "esperado": false,
+      "justificacion": "Falta el identificador de la declaración.",
+      "resultado": false,
+      "coincide": true,
+      "tokens": [
+        {
+          "token": "ENTERO",
+          "lexema": "entero",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 8
+        }
+      ],
+      "error": {
+        "fase": "sintáctico",
+        "mensaje": "Se esperaba un identificador después del tipo; se encontró «#».",
+        "linea": 1,
+        "columna": 8
+      }
+    }
+  ],
+  "programas": [
+    {
+      "archivo": "ejemplos/programa_referencia.txt",
+      "extension": false,
+      "valido": true,
+      "cantidad_tokens": 91,
+      "nodos": {
+        "programa": 1,
+        "lista_instrucciones": 20,
+        "instruccion": 20,
+        "asignacion_simple": 6,
+        "operando": 20,
+        "asignacion_aritmetica": 7,
+        "expresion": 7,
+        "operador": 7,
+        "salida": 7
+      }
+    },
+    {
+      "archivo": "ejemplos/programa_extendido.txt",
+      "extension": true,
+      "valido": true,
+      "cantidad_tokens": 24,
+      "nodos": {
+        "programa": 1,
+        "lista_instrucciones": 6,
+        "instruccion": 6,
+        "declaracion": 2,
+        "tipo": 2,
+        "asignacion_simple": 2,
+        "operando": 2,
+        "salida": 2
+      }
+    }
+  ],
+  "alcance": "Sintaxis de programas o instrucciones según el modo; sin evaluación semántica."
+}

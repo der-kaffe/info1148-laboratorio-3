@@ -1,0 +1,28 @@
+# GLC base. ID y NUM son terminales de categoría léxica.
+# Las comillas indican terminales literales y no forman parte de la entrada.
+# El símbolo inicial es <programa>.
+
+<programa> ::= "Begin" "Programa" ID <lista_instrucciones> "End"
+<lista_instrucciones> ::= <instruccion> <lista_instrucciones> | <instruccion>
+<instruccion> ::= <asignacion_simple> | <asignacion_aritmetica> | <salida>
+<asignacion_simple> ::= ID "=" <operando> "#"
+<asignacion_aritmetica> ::= ID "=" <expresion> "#"
+<expresion> ::= <operando> <operador> <operando>
+<operando> ::= ID | NUM
+<operador> ::= "+" | "-" | "*" | "/" | "%"
+<salida> ::= "salida" ID "#"
+
+# Extensión C. Se reemplaza la producción <instruccion> por la siguiente
+# y se añaden <declaracion>, <tipo> y los terminales "entero", "real".
+# Las demás producciones y el símbolo inicial se mantienen.
+
+<instruccion> ::= <asignacion_simple> | <asignacion_aritmetica> | <salida> | <declaracion>
+<declaracion> ::= <tipo> ID "#"
+<tipo> ::= "entero" | "real"
+
+# Definiciones léxicas (fuera de la GLC sintáctica):
+# L = [A-Za-zÑñÁÉÍÓÚÜáéíóúü]
+# D = [0-9]
+# ID = L (L | D | "_")*, salvo las reservadas activas.
+# NUM = D+ ("." D+)?
+# Se ignoran los espacios y los comentarios /* ... */ no anidados.

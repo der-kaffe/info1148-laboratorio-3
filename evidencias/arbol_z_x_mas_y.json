@@ -1,0 +1,66 @@
+{
+  "simbolo": "instruccion",
+  "hijos": [
+    {
+      "simbolo": "asignacion_aritmetica",
+      "hijos": [
+        {
+          "token": "ID",
+          "lexema": "z",
+          "linea": 1,
+          "columna": 1
+        },
+        {
+          "token": "IGUAL",
+          "lexema": "=",
+          "linea": 1,
+          "columna": 3
+        },
+        {
+          "simbolo": "expresion",
+          "hijos": [
+            {
+              "simbolo": "operando",
+              "hijos": [
+                {
+                  "token": "ID",
+                  "lexema": "x",
+                  "linea": 1,
+                  "columna": 5
+                }
+              ]
+            },
+            {
+              "simbolo": "operador",
+              "hijos": [
+                {
+                  "token": "OPERADOR",
+                  "lexema": "+",
+                  "linea": 1,
+                  "columna": 7
+                }
+              ]
+            },
+            {
+              "simbolo": "operando",
+              "hijos": [
+                {
+                  "token": "ID",
+                  "lexema": "y",
+                  "linea": 1,
+                  "columna": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "token": "FIN",
+          "lexema": "#",
+          "linea": 1,
+          "columna": 11
+        }
+      ]
+    }
+  ]
+}

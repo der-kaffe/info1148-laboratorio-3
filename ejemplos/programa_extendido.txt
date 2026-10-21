@@ -1,0 +1,11 @@
+Begin
+Programa declaraciones_demo
+
+entero contador #
+real temperatura #
+contador = 0 #
+temperatura = 20.5 #
+salida contador #
+salida temperatura #
+
+End
