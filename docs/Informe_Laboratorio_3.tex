@@ -50,13 +50,33 @@
 
 \color{BodyColor}\fontsize{9.2}{13.0}\selectfont
 
-\ReportSection{1. Identificación formal de la gramática}
+\begin{center}
+{\color{black}\bfseries\fontsize{17}{21}\selectfont INFORME DE LABORATORIO \#3\par}
+\vspace{4pt}
+{\color{black}\bfseries\fontsize{15}{19}\selectfont Diseño y Validación de Gramáticas\par}
+\end{center}
+\vspace{9pt}
 
-\textbf{Laboratorio 3 - Diseño y Validación de Gramáticas}\newline{}Teoría de la Computación \textperiodcentered{} INFO1148 \textperiodcentered{} 21 de octubre de 2026\newline{}\textbf{Autores:} Juan Cárdenas y Bayron Flores
+\begingroup\fontsize{10}{13}\selectfont
+\setlength{\tabcolsep}{7pt}\renewcommand{\arraystretch}{1.3}
+\arrayrulecolor{black}
+\noindent\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{0.38\dimexpr\linewidth-4\tabcolsep-3\arrayrulewidth\relax}|>{\raggedright\arraybackslash}X|}\hline
+\rowcolor{TableHead}\centering\textbf{Antecedente} & \centering\arraybackslash\textbf{Información} \\\hline
+Asignatura & Teoría de la Computación INFO1148 \\\hline
+Carrera & Ingeniería Civil en Informática \\\hline
+Docente & M. Lévano \\\hline
+Integrantes & Juan Cárdenas y Bayron Flores (Jefe de Grupo) \\\hline
+Fecha & 21 de octubre de 2026 \\\hline
+\end{tabularx}\par\endgroup
+\vspace{10pt}
+
+\ReportSection{1. Introducción}
+
+El propósito de este laboratorio es diseñar y validar una Gramática Libre de Contexto (GLC) para un lenguaje de programación simplificado. Se identifican sus terminales, no terminales y símbolo inicial; se construyen producciones para programas con una o más instrucciones, asignaciones y salidas; y se comprueba su coherencia mediante derivaciones por la izquierda, un árbol sintáctico y cadenas válidas e inválidas. El análisis léxico reconoce identificadores y números, mientras que el análisis sintáctico verifica el orden de sus categorías. Como extensión creativa se incorporan declaraciones de variables de tipo entero y real. El informe presenta las decisiones de diseño y las evidencias que permiten verificar cada resultado.
 \par
 
-Propuesta de solución al enunciado, con decisiones de diseño explícitas y evidencias ejecutables. La actividad se describe como trabajo en parejas y entrega de informe más evidencias; este documento desarrolla sus preguntas y su extensión C.
-\par
+\ReportSection{2. Desarrollo}
+\ReportHeading{2.1 Pregunta 1 - Identificación formal de la gramática}
 
 \ReportHeading{1. Terminales y clasificación}
 
@@ -158,7 +178,7 @@ En ID[z], el símbolo terminal es ID y z es su lexema anotado. Esta notación no
 
 \clearpage
 
-\ReportSection{2. Construcción de la GLC}
+\ReportSection{2.2 Pregunta 2 - Construcción de la GLC}
 
 \ReportHeading{6. Producciones de la gramática base}
 
@@ -263,7 +283,7 @@ Este es un análisis sintáctico. No se calcula el valor de k /\allowbreak{} z n
 
 \clearpage
 
-\ReportSection{3. Derivaciones por la izquierda}
+\ReportSection{2.3 Pregunta 3 - Derivaciones y árbol sintáctico}
 
 En cada paso se sustituye el no terminal situado más a la izquierda. Como S = \textless{}programa\textgreater{} genera programas completos, las instrucciones aisladas de los puntos 10 y 11 se derivan localmente desde \textless{}instruccion\textgreater{}.
 \par
@@ -358,7 +378,7 @@ every path/.style={draw=EdgeColor,line width=.45pt}]
 \par\vspace{3pt}{\fontsize{8}{10}\selectfont\color{Muted}Representación TikZ autónoma del árbol; terminales en verde y no terminales en azul.}
 \end{center}
 
-Árbol generado desde la misma estructura que devuelve el validador. Se adjuntan el archivo DOT editable y sus representaciones SVG y PNG, creadas con Graphviz. La fuente LaTeX dibuja esa misma estructura con TikZ, sin necesitar imágenes externas. No se utilizó JFLAP.
+Árbol generado desde la misma estructura que devuelve el validador. El \href{https://drive.google.com/drive/folders/1m0glvzrPN8F7qQWRx1TLlZRkeD7HSk1k}{archivo DOT editable y sus representaciones SVG y PNG} están adjuntos en Google Drive y fueron creados con Graphviz. La fuente LaTeX dibuja esa misma estructura con TikZ, sin necesitar imágenes externas. No se utilizó JFLAP.
 \par
 
 \ReportHeading{13. Relación entre raíz, nodos y hojas}
@@ -392,7 +412,7 @@ salida temporal \# & Sí & \textless{}salida\textgreater{} \ensuremath{\to} sali
 
 \clearpage
 
-\ReportSection{4. Validación y detección de errores}
+\ReportSection{2.4 Pregunta 4 - Validación y detección de errores}
 
 Los casos 1-7 se comprueban como instrucciones. El caso 8 se comprueba como programa completo. La tabla indica tanto la aceptación como el elemento que falta o está fuera de lugar.
 \par
@@ -437,7 +457,7 @@ La versión anterior con líneas es válida. La versión literal Begin /\allowbr
 
 \clearpage
 
-\ReportSection{5. Extensión creativa: declaraciones de variables}
+\ReportSection{2.5 Extensión creativa - Declaraciones de variables}
 
 Se elige la \textbf{opción C}: añadir declaraciones sencillas. Su utilidad sintáctica es permitir que el programa exprese un tipo y un nombre antes de las asignaciones.
 \par
@@ -507,7 +527,27 @@ La extensión define sintaxis, no una tabla de símbolos: no comprueba repetici�
 
 \clearpage
 
-\ReportSection{6. Evidencias, reproducción y conclusiones}
+\ReportSection{3. Conclusiones}
+
+La GLC propuesta distingue programas completos de instrucciones y separa asignaciones simples, asignaciones con una operación y salidas. ID y NUM permiten reutilizar las mismas producciones con distintos nombres y valores. Las veinte instrucciones del programa de referencia quedan cubiertas y los errores de los casos 4-7 se detectan por un elemento sintáctico concreto.
+\par
+
+Las derivaciones, el árbol y el validador comparten las mismas producciones. La extensión agrega declaraciones mediante dos nuevos no terminales y dos palabras reservadas, conservando la estructura del programa. Las decisiones sobre 0, comentarios y barras editoriales se declaran para que el alcance de la solución sea verificable.
+\par
+
+\ReportSection{4. Archivos adjuntos}
+
+Todo el contenido del laboratorio, incluyendo el informe, la fuente LaTeX, los diagramas, la gramática, el validador, los programas de ejemplo y las evidencias de las pruebas, se encuentra disponible en la siguiente carpeta de Google Drive:
+\par
+\textbf{Enlace:} \url{https://drive.google.com/drive/folders/1bNQcTqB4XKDPTkW4AXRuGCijnVxjX7TX}
+\par
+
+\begin{itemize}[leftmargin=13pt,itemsep=3pt,topsep=3pt,parsep=0pt]
+\item \href{https://drive.google.com/drive/folders/1m0glvzrPN8F7qQWRx1TLlZRkeD7HSk1k}{Árbol sintáctico: diagramas PNG y SVG y archivo DOT editable.}
+\item \href{https://drive.google.com/drive/folders/1JhszkPPDjUckrhO5nUqpM5lOfFZOcu4h}{Gramática y validador: producciones, código y programas de ejemplo.}
+\item \href{https://drive.google.com/drive/folders/19fGeTyS32ESlukLO6smH5J2xwzntVZuT}{Evidencias: validación de cadenas, árbol en JSON y registro de pruebas.}
+\item \href{https://drive.google.com/drive/folders/1Mk49jfYtqgAefDx3ksJxTgen6ctqOeEM}{Fuente LaTeX y respaldo: archivo editable y paquete completo en ZIP.}
+\end{itemize}
 
 \ReportHeading{Evidencias entregadas}
 
@@ -515,15 +555,15 @@ La extensión define sintaxis, no una tabla de símbolos: no comprueba repetici�
 
 \item Informe HTML, PDF y fuente LaTeX autónoma con identificación formal, producciones, derivaciones, árbol, validación, extensión y conclusiones.
 
-\item gramatica.bnf contiene las nueve producciones agrupadas de la base y la modificación de la extensión C.
+\item \href{https://drive.google.com/file/d/17ewYfIYOjwTXuDbU1OAsBNICsJnZHuss/view}{gramatica.bnf} contiene las nueve producciones agrupadas de la base y la modificación de la extensión C.
 
-\item validador.py contiene el análisis léxico y sintáctico; devuelve errores con fase, línea y columna.
+\item \href{https://drive.google.com/file/d/15_pCDRy1ZVEiERgstFPbCUh0AQehxTIB/view}{validador.py} contiene el análisis léxico y sintáctico; devuelve errores con fase, línea y columna.
 
-\item evidencias/\allowbreak{}validacion.json registra once comprobaciones de cadenas, incluidas ambas lecturas del caso 8 y los dos ejemplos de extensión, más los dos programas completos aceptados.
+\item \href{https://drive.google.com/file/d/11CZZWyp0hWTD__QrImJzayKnr4Ma42wF/view}{evidencias/\allowbreak{}validacion.json} registra once comprobaciones de cadenas, incluidas ambas lecturas del caso 8 y los dos ejemplos de extensión, más los dos programas completos aceptados.
 
-\item evidencias/\allowbreak{}arbol\_\allowbreak{}z\_\allowbreak{}x\_\allowbreak{}mas\_\allowbreak{}y.json conserva el árbol que sirve de fuente de la figura.
+\item \href{https://drive.google.com/file/d/1FfMsvVMZ8VBfOz0pYUDTUURfInJlWc4a/view}{evidencias/\allowbreak{}arbol\_\allowbreak{}z\_\allowbreak{}x\_\allowbreak{}mas\_\allowbreak{}y.json} conserva el árbol que sirve de fuente de la figura.
 
-\item evidencias/\allowbreak{}pruebas.txt registra la ejecución de 20 pruebas automatizadas; el código de esas pruebas se incluye en pruebas/\allowbreak{}.
+\item \href{https://drive.google.com/file/d/1EoAHXeO2O1gblCPRnflsFjsVPS1Lzjz5/view}{evidencias/\allowbreak{}pruebas.txt} registra la ejecución de 20 pruebas automatizadas; el código de esas pruebas se incluye en pruebas/\allowbreak{}.
 
 \end{itemize}
 
@@ -541,20 +581,15 @@ La extensión define sintaxis, no una tabla de símbolos: no comprueba repetici�
 \strut{}python3 herramientas/generar\_evidencias.py\par
 \end{minipage}}\par\endgroup\vspace{5pt}
 
-\ReportHeading{Conclusiones}
-
-La GLC propuesta distingue programas completos de instrucciones y separa asignaciones simples, asignaciones con una operación y salidas. ID y NUM permiten reutilizar las mismas producciones con distintos nombres y valores. Las veinte instrucciones del programa de referencia quedan cubiertas y los errores de los casos 4-7 se detectan por un elemento sintáctico concreto.
-\par
-
-Las derivaciones, el árbol y el validador comparten las mismas producciones. La extensión agrega declaraciones mediante dos nuevos no terminales y dos palabras reservadas, conservando la estructura del programa. Las decisiones sobre 0, comentarios y barras editoriales se declaran para que el alcance de la solución sea verificable.
-\par
-
 \ReportHeading{Fuentes}
 
-1. Laboratorio\_\allowbreak{}3\_\allowbreak{}enunciado.pdf, copia del documento de cinco páginas proporcionado para esta actividad. Pregunta 1: p. 2; pregunta 2: pp. 2-3; pregunta 3 y ocho casos: p. 3; extensión y entregables: p. 4; coherencia exigida: p. 5.
+1. \href{https://drive.google.com/file/d/1dWAGayupZWFKaRqMTrzPXSf6t30L21k8/view}{Laboratorio\_\allowbreak{}3\_\allowbreak{}enunciado.pdf}, documento de cinco páginas proporcionado para esta actividad. Pregunta 1: p. 2; pregunta 2: pp. 2-3; pregunta 3 y ocho casos: p. 3; extensión y entregables: p. 4; coherencia exigida: p. 5.
 \par
 
 2. sesion\_\allowbreak{}3\_\allowbreak{}4.pdf, archivo del curso: definición de gramática en PDF p. 3 y definición de L(G) en PDF p. 8. Enlace: \url{https://educa.blackboard.com/ultra/courses/_40866_1/file/_4454745_1?courseId=_40866_1}
+\par
+
+3. \href{https://drive.google.com/file/d/1OJxHs1ERN404OiHG-l35q1IYpkBgYAvt/view}{Rubrica\_\allowbreak{}Laboratorio\_\allowbreak{}3.pdf}, criterios de identificación formal, construcción de la GLC, derivaciones y árbol, validación y criterios transversales.
 \par
 
 Los desarrollos concretos de esta entrega son una propuesta propia; los archivos de referencia establecen el problema y sus conceptos.
