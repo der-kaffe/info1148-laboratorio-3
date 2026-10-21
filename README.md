@@ -11,7 +11,7 @@ Teoría de la Computación · INFO1148
 - [Gramática base, extensión y gramática léxica](gramatica.bnf)
 - Árboles de derivación de `z = x + y #`: [desde `<instruccion>`](arbol_sintactico/arbol_z_x_mas_y.svg) y [desde `<programa>`](arbol_sintactico/arbol_z_x_mas_y_programa.svg) (también `.png` y `.dot`)
 - [Derivaciones por la izquierda](evidencias/derivaciones.txt) y [resultados de validación](evidencias/validacion.json)
-- [Entrega completa en Google Drive](https://drive.google.com/drive/folders/1bNQcTqB4XKDPTkW4AXRuGCijnVxjX7TX)
+- [Entrega completa en Google Drive](https://drive.google.com/drive/folders/1SXU1cSjy1-m_Fg0xZlNUexpftVtnUft6?usp=sharing)
 
 ## Pertenencia: L(<programa>) y L(<instruccion>)
 
