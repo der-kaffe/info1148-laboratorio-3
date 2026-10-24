@@ -9,6 +9,7 @@ Teoría de la Computación · INFO1148
 - [Informe PDF](docs/Informe_Laboratorio_3.pdf) (formato de la plantilla del laboratorio, secciones 1 a 5 y anexo)
 - [Informe editable (.docx)](docs/Informe_Laboratorio_3.docx)
 - [Gramática base, extensión y gramática léxica](gramatica.bnf)
+- [Archivos JFLAP](jflap/): `lab3_base.jff` (17 producciones) y `lab3_extension.jff` (21 producciones), con [capturas](jflap/capturas/) de los árboles de `z = x + y #` y `salida z #` y de Multiple Brute Force Parse
 - Árboles de derivación de `z = x + y #`: [desde `<instruccion>`](arbol_sintactico/arbol_z_x_mas_y.svg) y [desde `<programa>`](arbol_sintactico/arbol_z_x_mas_y_programa.svg) (también `.png` y `.dot`)
 - [Derivaciones por la izquierda](evidencias/derivaciones.txt) y [resultados de validación](evidencias/validacion.json)
 - [Entrega completa en Google Drive](https://drive.google.com/drive/folders/1SXU1cSjy1-m_Fg0xZlNUexpftVtnUft6?usp=sharing)
@@ -30,6 +31,7 @@ y `--fragmento` comprueba **exactamente una instrucción** (L(<instruccion>)).
 - **P2:** producciones en `gramatica.bnf`, diferenciación de las tres instrucciones, función de cada no terminal, verificación del programa de referencia (20 instrucciones, 91 tokens) y aclaración de pertenencia.
 - **P3:** derivaciones por la izquierda desde `<instruccion>` y desde `<programa>` (`evidencias/derivaciones.txt`) y dos árboles consistentes con ellas.
 - **P4:** ocho casos justificados con el lenguaje comprobado y la posición del error (`evidencias/validacion.json`, Anexo A.2).
+- **JFLAP:** gramática ingresada con una letra por símbolo (traducción en el Anexo A.4 del informe); las 11 cadenas de prueba dan el resultado esperado en `lab3_extension.jff`, y `bpiti#e` se rechaza en `lab3_base.jff`.
 - **Extensión C:** `entero ID #` y `real ID #`, con gramática, derivación y casos válido/inválido.
 
 Los puntajes indican la distribución de la rúbrica, no una calificación obtenida.
@@ -59,3 +61,8 @@ de un identificador. Operadores: `+`, `-`, `*`, `/` y `%`. La extensión C se ac
 `ID` y `NUM` son categorías de tokens; los lexemas se conservan como anotaciones. Los identificadores empiezan con una letra y
 admiten letras, dígitos y guion bajo. Los números no tienen signo e incluyen 0. Las reservadas distinguen mayúsculas.
 Se ignoran espacios y comentarios `/* ... */` no anidados. No se realiza evaluación semántica.
+
+
+## JFLAP
+
+JFLAP solo admite símbolos de una letra: `S`=`<programa>`, `L`=`<lista_instrucciones>`, `I`=`<instruccion>`, `A`=`<asignacion_simple>`, `R`=`<asignacion_aritmetica>`, `E`=`<expresion>`, `O`=`<operando>`, `M`=`<operador>`, `C`=`<salida>`, `D`=`<declaracion>`, `Y`=`<tipo>`; y `b`=Begin, `p`=Programa, `e`=End, `o`=salida, `i`=ID, `n`=NUM, `t`=entero, `r`=real. Cada instrucción se prueba envuelta en `bpi … e` (por ejemplo, `z = x + y #` es `bpii=i+i#e`). Abrir el `.jff` en JFLAP y usar Input → Brute Force Parse o Multiple Brute Force Parse.
